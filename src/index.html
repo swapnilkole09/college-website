@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="utf-8">
+  <title>AMGOI</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  
+  <app-root></app-root>
+  <script src="https://github.com/Cognigy/WebchatWidget/releases/latest/download/webchat.js"></script>
+
+        <script>
+
+            let getWebChatSessionId =
+                localStorage.getItem("webChatSessionId") !== undefined &&
+                localStorage.getItem("webChatSessionId") !== null
+                    ? JSON.parse(localStorage.getItem("webChatSessionId"))
+                    : "";
+            let customerId = JSON.parse(localStorage.getItem("uniqueId"));
+            let locationvalue = JSON.parse(localStorage.getItem("loggedIn"));
+            let webChatAuthentication =
+                JSON?.parse(localStorage.getItem("webChatAuthentication")) ||
+                "";
+            initWebchat(
+                "https://endpoint-trial.cognigy.ai/fe0d7f85c16a1886082351ca6aadaab1d797a3e0583ae5acde23d8a71d38917f",
+                {
+                    settings: {
+                        disableBranding: "true",
+                        designTemplate: "2",
+                        title: "indexPopUp",
+                        startBehavior: "injection",
+                        getStartedText: "",
+                        getStartedData: {
+                            session_extref: getWebChatSessionId
+                                ? getWebChatSessionId
+                                : "",
+                            authenticated: webChatAuthentication ? "yes" : "no",
+                            customer_uniqueId: customerId,
+                            locationpath: locationvalue,
+                        },
+                    },
+                }
+            )
+                .then((webchat) => {
+                    console.log("response of webchat--> ", webchat);
+                })
+                .catch((error) => {
+                    console.log("error of webchat--> ", error);
+                });
+        </script>
+
+</body>
+</html>
